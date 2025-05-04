@@ -1,0 +1,172 @@
+from zipfile import ZipFile
+from pathlib import Path
+
+# Create folder and files for hw6
+folder = Path("/mnt/data/hw6_submission")
+folder.mkdir(parents=True, exist_ok=True)
+
+# HTML content
+html_content = """<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Homework 6 Demo</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f8f9fa;
+    }
+    h1, h2 {
+      font-weight: bold;
+    }
+    p {
+      font-size: 1.1rem;
+    }
+  </style>
+</head>
+
+<body onload="initializePage()">
+
+  <!-- Header Jumbotron -->
+  <div class="jumbotron text-center bg-primary text-white">
+    <h1>My Bootstrap + JavaScript Page</h1>
+    <p>Exploring Dynamic Web Interactions</p>
+  </div>
+
+  <!-- Buttons Section -->
+  <div class="container mb-4">
+    <button id="btnGreet" class="btn btn-success mr-2">Greet</button>
+    <button id="btnChange" class="btn btn-warning">Change Background</button>
+    <p id="message" class="mt-3 text-info font-weight-bold"></p>
+  </div>
+
+  <!-- Form Section -->
+  <div class="container bg-light p-4 mb-3 border">
+    <form id="userForm">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" class="form-control" id="name" name="name">
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" class="form-control" id="password" name="password">
+      </div>
+
+      <div class="form-group">
+        <label for="role">Select Role:</label>
+        <select class="form-control" id="role" name="role">
+          <option value="Student">Student</option>
+          <option value="Instructor">Instructor</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+
+  <!-- Original HW4 Content Below -->
+  <div class="container bg-light p-4 mb-3">
+    <div class="row">
+      <div class="col-md-6">
+        <h2 class="text-success">Introduction</h2>
+        <p>This is a simple responsive web page designed using Bootstrap's container and grid system.</p>
+      </div>
+      <div class="col-md-6">
+        <h2 class="text-info">Objective</h2>
+        <p>The goal is to demonstrate familiarity with various Bootstrap classes and layout principles.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid bg-secondary text-white p-4 mb-3">
+    <div class="row">
+      <div class="col-sm-4">
+        <h3>Feature 1</h3>
+        <p>Using container-fluid to stretch the full width of the page.</p>
+      </div>
+      <div class="col-sm-4">
+        <h3>Feature 2</h3>
+        <p>Equal column width using col-sm-4 for balanced layout.</p>
+      </div>
+      <div class="col-sm-4">
+        <h3>Feature 3</h3>
+        <p>Consistent background and text styling for readability.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-md bg-white p-4 mb-3 border">
+    <div class="row">
+      <div class="col-12">
+        <h2 class="text-dark">Conclusion</h2>
+        <p>By stacking containers with unique Bootstrap classes, we can easily build attractive and responsive webpages.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container text-center p-3 bg-dark text-white">
+    <p>&copy; 2025 My Bootstrap Homework. All rights reserved.</p>
+  </div>
+
+  <!-- Link to your JS file -->
+  <script src="hw6.js"></script>
+</body>
+</html>
+"""
+
+# JavaScript content
+js_content = """function initializePage() {
+  document.getElementById("btnGreet").addEventListener("click", greetUser);
+  document.getElementById("btnChange").addEventListener("click", changeBackground);
+  document.getElementById("userForm").addEventListener("submit", handleForm);
+}
+
+function greetUser() {
+  const name = document.getElementById("name").value;
+  document.getElementById("message").textContent = "Hello, " + (name || "Guest") + "!";
+}
+
+function changeBackground() {
+  document.body.style.backgroundColor = getRandomColor();
+}
+
+function getRandomColor() {
+  const letters = "0123456789ABCDEF";
+  let color = "#";
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
+function handleForm(event) {
+  event.preventDefault();
+  const name = document.getElementById("name").value;
+  const role = document.getElementById("role").value;
+  document.getElementById("message").textContent = `Thanks ${name || "User"}, your role "${role}" has been recorded.`;
+}
+"""
+
+# Write files
+html_path = folder / "hw6.html"
+js_path = folder / "hw6.js"
+
+html_path.write_text(html_content)
+js_path.write_text(js_content)
+
+# Create zip
+zip_path = "/mnt/data/HW6_Final_Submission.zip"
+with ZipFile(zip_path, 'w') as zipf:
+    zipf.write(html_path, arcname="hw6.html")
+    zipf.write(js_path, arcname="hw6.js")
+
+zip_path
+
