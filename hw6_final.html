@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HW6 JavaScript Dynamic Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    button, input, select {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body onload="initializePage()">
+  <h1>Order Page (HW6)</h1>
+
+  <!-- Buttons -->
+  <button id="btnGreet">Greet</button>
+  <button id="btnChange">Change Background</button>
+
+  <p id="message"></p>
+
+  <!-- Order Form -->
+  <form id="orderForm">
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" name="name"><br><br>
+
+    <label for="password">Password:</label><br>
+    <input type="password" id="password" name="password"><br><br>
+
+    <label for="item">Select Item:</label><br>
+    <select id="item" name="item">
+      <option value="Pizza">Pizza</option>
+      <option value="Burger">Burger</option>
+      <option value="Salad">Salad</option>
+    </select><br><br>
+
+    <button type="submit">Place Order</button>
+  </form>
+
+  <script>
+    function initializePage() {
+      document.getElementById("btnGreet").addEventListener("click", greetUser);
+      document.getElementById("btnChange").addEventListener("click", changeBackground);
+      document.getElementById("orderForm").addEventListener("submit", handleOrder);
+    }
+
+    function greetUser() {
+      const name = document.getElementById("name").value;
+      document.getElementById("message").textContent = "Hello, " + (name || "Guest") + "!";
+    }
+
+    function changeBackground() {
+      document.body.style.backgroundColor = getRandomColor();
+    }
+
+    function getRandomColor() {
+      const letters = "0123456789ABCDEF";
+      let color = "#";
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
+    function handleOrder(event) {
+      event.preventDefault();
+      const name = document.getElementById("name").value;
+      const item = document.getElementById("item").value;
+      document.getElementById("message").textContent =
+        `Thanks ${name || "Customer"}, your order for ${item} has been placed.`;
+    }
+  </script>
+</body>
+</html>
