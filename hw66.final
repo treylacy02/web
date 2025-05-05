@@ -1,0 +1,156 @@
+from pathlib import Path
+
+# New HTML with interactive selection using placeholder images
+enhanced_html = """<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HW6 Food Selector</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f8f8f8;
+    }
+    h2 {
+      margin-top: 40px;
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 5px;
+    }
+    .category {
+      margin-bottom: 20px;
+    }
+    .item {
+      display: inline-block;
+      margin: 10px;
+      text-align: center;
+    }
+    .item img {
+      width: 120px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .item img:hover {
+      transform: scale(1.05);
+    }
+    .selected {
+      border: 4px solid #007BFF;
+    }
+    button {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body onload="initializePage()">
+  <h1>Order Page (HW6)</h1>
+
+  <!-- Buttons -->
+  <button id="btnGreet">Greet</button>
+  <button id="btnChange">Change Background</button>
+  <p id="message"></p>
+
+  <!-- Form -->
+  <form id="orderForm">
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" name="name"><br><br>
+
+    <label for="password">Password:</label><br>
+    <input type="password" id="password" name="password"><br><br>
+
+    <input type="hidden" id="selectedItem" name="item">
+
+    <div id="gallery">
+
+      <div class="category">
+        <h2>Burgers</h2>
+        <div class="item"><img src="https://via.placeholder.com/120x100?text=Small+Burger" alt="smallBurger" onclick="selectItem(this, 'Small Burger')"><p>Small Burger</p></div>
+        <div class="item"><img src="https://via.placeholder.com/120x100?text=Medium+Burger" alt="mediumBurger" onclick="selectItem(this, 'Medium Burger')"><p>Medium Burger</p></div>
+        <div class="item"><img src="https://via.placeholder.com/120x100?text=Large+Burger" alt="largeBurger" onclick="selectItem(this, 'Large Burger')"><p>Large Burger</p></div>
+      </div>
+
+      <div class="category">
+        <h2>Fries</h2>
+        <div class="item"><img src="https://via.placeholder.com/120x100?text=Small+Fries" alt="smallFry" onclick="selectItem(this, 'Small Fries')"><p>Small Fries</p></div>
+        <div class="item"><img src="https://via.placeholder.com/120x100?text=Medium+Fries" alt="mediumFry" onclick="selectItem(this, 'Medium Fries')"><p>Medium Fries</p></div>
+        <div class="item"><img src="https://via.placeholder.com/120x100?text=Large+Fries" alt="largeFry" onclick="selectItem(this, 'Large Fries')"><p>Large Fries</p></div>
+      </div>
+
+      <div class="category">
+        <h2>Drinks</h2>
+        <div class="item"><img src="https://via.placeholder.com/120x100?text=Pepsi" alt="pepsiCola" onclick="selectItem(this, 'Pepsi')"><p>Pepsi</p></div>
+        <div class="item"><img src="https://via.placeholder.com/120x100?text=Sams+Cola" alt="samsCola" onclick="selectItem(this, 'Sams Cola')"><p>Sams Cola</p></div>
+        <div class="item"><img src="https://via.placeholder.com/120x100?text=Coca+Cola" alt="cocacola" onclick="selectItem(this, 'Coca Cola')"><p>Coca Cola</p></div>
+        <div class="item"><img src="https://via.placeholder.com/120x100?text=Water" alt="water" onclick="selectItem(this, 'Water')"><p>Water</p></div>
+      </div>
+
+      <div class="category">
+        <h2>Sides</h2>
+        <div class="item"><img src="https://via.placeholder.com/120x100?text=Nuggets" alt="nugget" onclick="selectItem(this, 'Nuggets')"><p>Nuggets</p></div>
+        <div class="item"><img src="https://via.placeholder.com/120x100?text=Salad" alt="salad" onclick="selectItem(this, 'Salad')"><p>Salad</p></div>
+      </div>
+
+    </div>
+
+    <br>
+    <button type="submit">Place Order</button>
+  </form>
+
+  <script>
+    function initializePage() {
+      document.getElementById("btnGreet").addEventListener("click", greetUser);
+      document.getElementById("btnChange").addEventListener("click", changeBackground);
+      document.getElementById("orderForm").addEventListener("submit", handleOrder);
+    }
+
+    function greetUser() {
+      const name = document.getElementById("name").value;
+      document.getElementById("message").textContent = "Hello, " + (name || "Guest") + "!";
+    }
+
+    function changeBackground() {
+      document.body.style.backgroundColor = getRandomColor();
+    }
+
+    function getRandomColor() {
+      const letters = "0123456789ABCDEF";
+      let color = "#";
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
+    function selectItem(element, itemName) {
+      // Clear previous selection
+      document.querySelectorAll('.item img').forEach(img => img.classList.remove('selected'));
+      // Highlight current
+      element.classList.add('selected');
+      // Set hidden input
+      document.getElementById("selectedItem").value = itemName;
+    }
+
+    function handleOrder(event) {
+      event.preventDefault();
+      const name = document.getElementById("name").value;
+      const item = document.getElementById("selectedItem").value;
+      if (!item) {
+        document.getElementById("message").textContent = "Please select an item before placing your order.";
+        return;
+      }
+      document.getElementById("message").textContent =
+        `Thanks ${name || "Customer"}, your order for ${item} has been placed.`;
+    }
+  </script>
+</body>
+</html>
+"""
+
+# Save to file
+file_path = Path("/mnt/data/hw6_food_selector.html")
+file_path.write_text(enhanced_html)
+
+file_path.name
